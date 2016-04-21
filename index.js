@@ -5,8 +5,8 @@ const _ = require('lodash');
 
 const buildUrlFromRequest = (req) => {
 	return url.format({
-		protocol: req.protocol,
-		host: req.get('host'),
+		protocol: 'https',
+		host: req.get('x-forwarded-host'),
 		pathname: req.originalUrl
 	});
 };
@@ -39,7 +39,6 @@ const avAuth = (opts) => {
 		if (!req.get(checkHeader)) {
 			return next();
 		}
-		console.log(req);
 		const location = buildUrlFromRequest(req);
 		const barrierModel = {
 			login: buildUrl(loginPage, {location}),
