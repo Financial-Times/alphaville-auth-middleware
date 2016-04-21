@@ -1,14 +1,15 @@
 {
-  "name": "av2-auth-middleware",
-  "version": "1.0.0",
+  "name": "alphaville-auth-middleware",
+  "version": "0.0.1",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "homepage": "https://github.com/Financial-Times/alphaville-auth-middleware",
   "repository": {
     "type": "git",
-    "url": "git@github-iq:Financial-Times/av2-auth-middleware.git"
+    "url": "git@github.com:Financial-Times/alphaville-auth-middleware.git"
   },
   "keywords": [],
   "author": "Dragos Digulescu <dragos.digulescu@ft.com> (https://github.com/ddigulescu)",
