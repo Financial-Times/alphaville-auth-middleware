@@ -39,6 +39,7 @@ const avAuth = (opts) => {
 		if (!req.get(checkHeader)) {
 			return next();
 		}
+		console.log(req);
 		const location = buildUrlFromRequest(req);
 		const barrierModel = {
 			login: buildUrl(loginPage, {location}),
