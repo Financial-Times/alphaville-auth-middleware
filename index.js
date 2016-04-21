@@ -29,6 +29,7 @@ const avAuth = (opts) => {
 		throw new Error('Name of the barrier view is required');
 	}
 
+	let viewModel = opts['viewModel'] || {};
 	let checkHeader = opts['checkHeader'];
 	let loginPage = opts['loginPage'] || 'https://accounts.ft.com/login';
 	let registerPage = opts['registerPage'] || 'https://register.ft.com/';
@@ -44,7 +45,7 @@ const avAuth = (opts) => {
 			register: buildUrl(registerPage, {location}),
 			subscriptions: buildUrl(subscriptionsPage)
 		};
-		res.render(opts['barrierView'], barrierModel);
+		res.render(opts['barrierView'], _.extend(viewModel, barrierModel));
 	}
 };
 
