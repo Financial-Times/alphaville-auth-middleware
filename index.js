@@ -36,9 +36,12 @@ const avAuth = (opts) => {
 	let subscriptionsPage = opts['subscriptionsPage'] || 'https://subscribe.ft.com/psp?segId=70703';
 
 	return function(req, res, next) {
+		console.log(checkHeader);
 		if (!req.get(checkHeader)) {
+			console.log(req.get(checkHeader));
 			return next();
 		}
+		console.log('test');
 		const location = buildUrlFromRequest(req);
 		const barrierModel = {
 			login: buildUrl(loginPage, {location}),
