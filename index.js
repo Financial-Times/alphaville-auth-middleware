@@ -3,6 +3,12 @@
 const url = require('url');
 const _ = require('lodash');
 
+const config = {
+	loginUrl: 'https://accounts.ft.com/login',
+	registerUrl: 'https://register.ft.com/',
+	subscriptionsUrl: 'https://subscribe.ft.com/psp?segId=70703'
+};
+
 const buildUrlFromRequest = (req) => {
 	return url.format({
 		protocol: 'https',
@@ -20,35 +26,29 @@ const buildUrl = (urlStr, qsObject) => {
 	return url.format(_.extend(url.parse(urlStr), {query: qsObject}));
 };
 
+const getBarrierModel = (originalLocation, config) => {
+	return {
+		login: buildUrl(config.loginUrl, {originalLocation}),
+		register: buildUrl(config.registerUrl, {originalLocation}),
+		subscriptions: buildUrl(config.subscriptionsUrl)
+	};
+};
+
 const avAuth = (opts) => {
 
 	if ( !opts['checkHeader'] ) {
 		throw new Error('Name of the header to check is required');
 	}
-	if ( !opts['barrierView'] ) {
-		throw new Error('Name of the barrier view is required');
-	}
 
-	let viewModel = opts['viewModel'] || {};
 	let checkHeader = opts['checkHeader'];
-	let loginPage = opts['loginPage'] || 'https://accounts.ft.com/login';
-	let registerPage = opts['registerPage'] || 'https://register.ft.com/';
-	let subscriptionsPage = opts['subscriptionsPage'] || 'https://subscribe.ft.com/psp?segId=70703';
 
 	return function(req, res, next) {
-		console.log(checkHeader);
-		if (!req.get(checkHeader)) {
-			console.log(req.get(checkHeader));
-			return next();
+		if (req.get(checkHeader)) {
+			const location = buildUrlFromRequest(req);
+			req.isAuthenticated = false;
+			req.barrierModel = getBarrierModel(location, config);
 		}
-		console.log('test');
-		const location = buildUrlFromRequest(req);
-		const barrierModel = {
-			login: buildUrl(loginPage, {location}),
-			register: buildUrl(registerPage, {location}),
-			subscriptions: buildUrl(subscriptionsPage)
-		};
-		res.render(opts['barrierView'], _.extend(viewModel, barrierModel));
+		return next();
 	}
 };
 
