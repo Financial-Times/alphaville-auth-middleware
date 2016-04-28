@@ -26,10 +26,10 @@ const buildUrl = (urlStr, qsObject) => {
 	return url.format(_.extend(url.parse(urlStr), {query: qsObject}));
 };
 
-const getBarrierModel = (originalLocation, config) => {
+const getBarrierModel = (location, config) => {
 	return {
-		login: buildUrl(config.loginUrl, {originalLocation}),
-		register: buildUrl(config.registerUrl, {originalLocation}),
+		login: buildUrl(config.loginUrl, {location}),
+		register: buildUrl(config.registerUrl, {location}),
 		subscriptions: buildUrl(config.subscriptionsUrl)
 	};
 };
