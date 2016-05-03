@@ -1,0 +1,24 @@
+{{#contentFor "head"}}
+    <link rel="stylesheet" href="{{assetsBasePath}}/build/main.css" />
+
+    <script>
+        (function () {
+            ctmLoadScript({
+                src: "{{assetsBasePath}}/build/main.js",
+                async: true
+            });
+        }());
+    </script>
+{{/contentFor}}
+
+<div class="o-grid-container">
+    <div class="o-grid-row">
+        <div data-o-grid-colspan="8">
+            {{#barrierModel}}
+                {{> alphaville-barrier/main}}
+            {{/barrierModel}}
+        </div>
+        <div data-o-grid-colspan="4">
+        </div>
+    </div>
+</div>

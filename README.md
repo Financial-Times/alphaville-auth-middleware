@@ -5,9 +5,7 @@
 ```
 const auth = require('alphaville-auth-middleware');
 
-app.use(auth({
-  checkHeader: 'Name-Of-The-Header-To-Check' //required
-  checkHeaderValue: 'Name-Of-The-Header-Successful-Value' //required
-});
+app.use(auth());
 
 ```
+If env variable SKIP_AUTH is set the authentication will be skipped (for local dev)

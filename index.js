@@ -1,6 +1,7 @@
 'use strict';
 
 const url = require('url');
+const path = require('path');
 const _ = require('lodash');
 
 const config = {
@@ -26,34 +27,41 @@ const buildUrl = (urlStr, qsObject) => {
 	return url.format(_.extend(url.parse(urlStr), {query: qsObject}));
 };
 
-const avAuth = (opts) => {
+const avAuth = () => {
 
-	if ( !opts['checkHeader'] ) {
+	if ( process.env['SKIP_AUTH'] ) {
+		return function(req, res, next) {
+			return next();
+		}
+	}
+
+	const checkHeader =  process.env['AUTH_HEADER'];
+	const allowHeaderValue = process.env['AUTH_HEADER_VALUE'];
+
+	if (!checkHeader) {
 		throw new Error('Name of the header to check is required');
 	}
-	
-	if ( !opts['checkHeaderValue'] ) {
+
+	if (!allowHeaderValue) {
 		throw new Error('Value of the header to check is required');
 	}
 
-	let checkHeader = opts['checkHeader'];
-	let allow = opts['checkHeaderValue'];
-
 	return function(req, res, next) {
+
 		res.set('Vary', checkHeader);
-		
-		if (req.get(checkHeader) !== allow) {
-			const location = buildUrlFromRequest(req);
-			const barrierModel = {
+
+		if (req.get(checkHeader) === allowHeaderValue) {
+			return next();
+		}
+
+		const location = buildUrlFromRequest(req);
+		return res.render(path.join(__dirname, 'views/barrier'), {
+			barrierModel: {
 				login: buildUrl(config.loginUrl, {location}),
 				register: buildUrl(config.registerUrl, {location}),
 				subscriptions: buildUrl(config.subscriptionsUrl)
-			};
-			req.isAuthenticated = false;
-			req.barrierModel = barrierModel;
-		}
-		return next();
-		
+			}
+		});
 	}
 };
 
