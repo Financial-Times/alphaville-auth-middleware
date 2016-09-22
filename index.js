@@ -5,7 +5,7 @@ const path = require('path');
 const _ = require('lodash');
 
 const config = {
-	loginUrl: 'https://accounts.ft.com/login',
+	loginUrl: process.env['LOGIN_URL'] || 'https://accounts.ft.com/login',
 	registerUrl: 'https://register.ft.com/',
 	subscriptionsUrl: 'https://subscribe.ft.com/psp?segId=70703'
 };
