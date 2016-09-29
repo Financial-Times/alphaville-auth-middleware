@@ -48,6 +48,10 @@ const avAuth = () => {
 
 	return function(req, res, next) {
 
+		if (req.method === 'POST') {
+			return next();
+		}
+
 		res.set('Vary', checkHeader);
 
 		if (req.get(checkHeader) === allowHeaderValue) {
