@@ -7,7 +7,7 @@ const _ = require('lodash');
 const config = {
 	loginUrl: process.env['LOGIN_URL'] || 'https://accounts.ft.com/login',
 	registerUrl: 'https://register.ft.com/',
-	subscriptionsUrl: 'https://subscribe.ft.com/psp?segId=70703'
+	subscriptionsUrl: 'https://www.ft.com/products?segID=70703&segmentID=190b4443-dc03-bd53-e79b-b4b6fbd04e64'
 };
 
 const buildUrlFromRequest = (req) => {
