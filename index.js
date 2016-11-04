@@ -59,6 +59,9 @@ const avAuth = () => {
 		}
 
 		const location = buildUrlFromRequest(req);
+
+		res.set('Cache-Control', 'private, no-cache, no-store');
+
 		return res.render(path.join(__dirname, 'views/barrier'), {
 			barrierModel: {
 				login: buildUrl(config.loginUrl, {location}),
