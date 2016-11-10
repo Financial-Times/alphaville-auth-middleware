@@ -3,6 +3,8 @@
 const url = require('url');
 const path = require('path');
 const _ = require('lodash');
+const barrierGuru = require('./services/barrier-guru');
+const barrierModel = require('./barrierModel');
 
 const config = {
 	loginUrl: process.env['LOGIN_URL'] || 'https://accounts.ft.com/login',
@@ -62,12 +64,28 @@ const avAuth = () => {
 
 		res.set('Cache-Control', 'private, no-cache, no-store');
 
-		return res.render(path.join(__dirname, 'views/barrier'), {
-			barrierModel: {
-				login: buildUrl(config.loginUrl, {location}),
-				register: buildUrl(config.registerUrl, {location}),
-				subscriptions: buildUrl(config.subscriptionsUrl)
-			}
+		const clientIp = process.env['TEST_BARRIER'] ? process.env['TEST_BARRIER_IP'] : req.get('True-Client-IP');
+
+		barrierGuru.getBarrierData(clientIp)
+			.then(response => {
+				res.render(path.join(__dirname, 'views/barrier'), {
+					barrierModel: barrierModel({
+						title: 'Join your group subscription to access FT.com',
+						subtitle: `${response.displayName} has purchased a group subscription to FT.com`,
+						extraInfo: `${response.displayName} has paid for your FT subscription, giving you unlimited access to FT content on you desktop and mobile. Make informed decisions with our trusted source of global market intelligence`,
+						loginUrl: buildUrl(config.loginUrl, {location}),
+						loginText: 'Sign in'
+					})
+				});
+			}).catch(err => {
+			console.log('Barrier guru: ', err.statusCode, err.message);
+			res.render(path.join(__dirname, 'views/barrier'), {
+				barrierModel: barrierModel({
+					login: buildUrl(config.loginUrl, {location}),
+					register: buildUrl(config.registerUrl, {location}),
+					subscriptions: buildUrl(config.subscriptionsUrl)
+				})
+			});
 		});
 	}
 };
