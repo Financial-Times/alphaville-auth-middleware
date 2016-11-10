@@ -78,14 +78,14 @@ const avAuth = () => {
 					})
 				});
 			}).catch(err => {
-			console.log('Barrier guru: ', err.statusCode, err.message);
-			res.render(path.join(__dirname, 'views/barrier'), {
-				barrierModel: barrierModel({
-					login: buildUrl(config.loginUrl, {location}),
-					register: buildUrl(config.registerUrl, {location}),
-					subscriptions: buildUrl(config.subscriptionsUrl)
-				})
-			});
+				console.log('Barrier guru: ', err.statusCode, err.message);
+				res.render(path.join(__dirname, 'views/barrier'), {
+					barrierModel: barrierModel({
+						loginUrl: buildUrl(config.loginUrl, {location}),
+						register: buildUrl(config.registerUrl, {location}),
+						subscriptions: buildUrl(config.subscriptionsUrl)
+					})
+				});
 		});
 	}
 };
