@@ -78,7 +78,6 @@ const avAuth = () => {
 					})
 				});
 			}).catch(err => {
-				console.log('Barrier guru: ', err.statusCode, err.message);
 				res.render(path.join(__dirname, 'views/barrier'), {
 					barrierModel: barrierModel({
 						loginUrl: buildUrl(config.loginUrl, {location}),
