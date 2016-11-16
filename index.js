@@ -69,7 +69,7 @@ const avAuth = () => {
 		barrierGuru.getBarrierData(clientIp)
 			.then(response => {
 				res.render(path.join(__dirname, 'views/barrier'), {
-					barrierModel: _.extend(barrierModel,{
+					barrierModel: _.extend({}, barrierModel,{
 						title: 'Join your group subscription to access FT.com',
 						subtitle: `${response.displayName} has purchased a group subscription to FT.com`,
 						extraInfo: `${response.displayName} has paid for your FT subscription, giving you unlimited access to FT content on you desktop and mobile. Make informed decisions with our trusted source of global market intelligence`,
@@ -79,7 +79,7 @@ const avAuth = () => {
 				});
 			}).catch(err => {
 				res.render(path.join(__dirname, 'views/barrier'), {
-					barrierModel: _.extend(barrierModel, {
+					barrierModel: _.extend({}, barrierModel, {
 						loginUrl: buildUrl(config.loginUrl, {location}),
 						register: buildUrl(config.registerUrl, {location}),
 						subscriptions: buildUrl(config.subscriptionsUrl)
