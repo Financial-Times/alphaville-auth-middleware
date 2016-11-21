@@ -54,6 +54,8 @@ const avAuth = () => {
 			return next();
 		}
 
+		console.log('[auth-debug]: ', JSON.stringify(req.headers));
+
 		res.set('Vary', checkHeader);
 
 		if (req.get(checkHeader) === allowHeaderValue) {
