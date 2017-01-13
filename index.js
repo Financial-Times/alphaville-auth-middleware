@@ -64,11 +64,11 @@ const avAuth = () => {
 		}
 
 
-		if (contentClassificationHeader === lrClassification) {
+		if (req.get(contentClassificationHeader) === lrClassification) {
 			return res.redirect('/uc_longroom');
 		}
 
-		if (contentClassificationHeader === generalClassification) {
+		if (req.get(contentClassificationHeader) === generalClassification) {
 
 			const location = buildUrlFromRequest(req);
 			res.set('Cache-Control', 'private, no-cache, no-store');
