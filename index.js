@@ -39,6 +39,9 @@ const avAuth = () => {
 
 	const checkHeader =  process.env['AUTH_HEADER'];
 	const allowHeaderValue = process.env['AUTH_HEADER_VALUE'];
+	const contentClassificationHeader = process.env['CLASSIFICATION'];
+	const lrClassification = process.env['LR_CLASSIFICATION_VALUE'];
+	const generalClassification = process.env['GENERAL_CLASSIFICATION_VALUE'];
 
 	if (!checkHeader) {
 		throw new Error('Name of the header to check is required');
@@ -60,24 +63,30 @@ const avAuth = () => {
 			return next();
 		}
 
-		const location = buildUrlFromRequest(req);
 
-		res.set('Cache-Control', 'private, no-cache, no-store');
+		if (contentClassificationHeader === lrClassification) {
+			return res.redirect('/uc_longroom');
+		}
 
-		const clientIp = process.env['TEST_BARRIER'] ? process.env['TEST_BARRIER_IP'] : req.get('True-Client-IP');
+		if (contentClassificationHeader === generalClassification) {
 
-		barrierGuru.getBarrierData(clientIp)
-			.then(response => {
-				res.render(path.join(__dirname, 'views/barrier'), {
-					barrierModel: _.extend({}, barrierModel,{
-						title: 'Join your group subscription to access FT.com',
-						subtitle: `${response.displayName} has purchased a group subscription to FT.com`,
-						extraInfo: `${response.displayName} has paid for your FT subscription, giving you unlimited access to FT content on you desktop and mobile. Make informed decisions with our trusted source of global market intelligence`,
-						loginUrl: buildUrl(config.loginUrl, {location}),
-						loginText: 'Sign in'
-					})
-				});
-			}).catch(err => {
+			const location = buildUrlFromRequest(req);
+			res.set('Cache-Control', 'private, no-cache, no-store');
+
+			const clientIp = process.env['TEST_BARRIER'] ? process.env['TEST_BARRIER_IP'] : req.get('True-Client-IP');
+
+			barrierGuru.getBarrierData(clientIp)
+				.then(response => {
+					res.render(path.join(__dirname, 'views/barrier'), {
+						barrierModel: _.extend({}, barrierModel,{
+							title: 'Join your group subscription to access FT.com',
+							subtitle: `${response.displayName} has purchased a group subscription to FT.com`,
+							extraInfo: `${response.displayName} has paid for your FT subscription, giving you unlimited access to FT content on you desktop and mobile. Make informed decisions with our trusted source of global market intelligence`,
+							loginUrl: buildUrl(config.loginUrl, {location}),
+							loginText: 'Sign in'
+						})
+					});
+				}).catch(err => {
 				res.render(path.join(__dirname, 'views/barrier'), {
 					barrierModel: _.extend({}, barrierModel, {
 						loginUrl: buildUrl(config.loginUrl, {location}),
@@ -85,7 +94,8 @@ const avAuth = () => {
 						subscriptions: buildUrl(config.subscriptionsUrl)
 					})
 				});
-		});
+			});
+		}
 	}
 };
 
