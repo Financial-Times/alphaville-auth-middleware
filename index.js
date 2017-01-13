@@ -43,11 +43,6 @@ const avAuth = () => {
 	const lrClassification = process.env['LR_CLASSIFICATION_VALUE'];
 	const generalClassification = process.env['GENERAL_CLASSIFICATION_VALUE'];
 
-	console.log('checkHeader', checkHeader);
-	console.log('contentClassificationHeader', contentClassificationHeader);
-	console.log('lrClassification', lrClassification);
-	console.log('generalClassification', generalClassification);
-
 	if (!checkHeader) {
 		throw new Error('Name of the header to check is required');
 	}
