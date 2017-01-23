@@ -67,7 +67,7 @@ const avAuth = () => {
 
 
 		if (req.get(contentClassificationHeader) === lrClassification) {
-			return res.redirect('/uc_longroom');
+			return res.redirect('/longroom');
 		}
 
 		if (req.get(contentClassificationHeader) === generalClassification) {
@@ -88,16 +88,17 @@ const avAuth = () => {
 							loginText: 'Sign in'
 						})
 					});
-				}).catch(err => {
-				res.render(path.join(__dirname, 'views/barrier'), {
-					barrierModel: _.extend({}, barrierModel, {
-						loginUrl: buildUrl(config.loginUrl, {location}),
-						register: buildUrl(config.registerUrl, {location}),
-						subscriptions: buildUrl(config.subscriptionsUrl)
-					})
-				});
+				}).catch(()=> {
+					res.render(path.join(__dirname, 'views/barrier'), {
+						barrierModel: _.extend({}, barrierModel, {
+							loginUrl: buildUrl(config.loginUrl, {location}),
+							register: buildUrl(config.registerUrl, {location}),
+							subscriptions: buildUrl(config.subscriptionsUrl)
+						})
+					});
 			});
 		}
+		res.send(401);
 	}
 };
 
