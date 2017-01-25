@@ -62,6 +62,9 @@ const avAuth = () => {
 		res.set('Vary', checkHeader);
 
 		if (req.get(checkHeader) === allowHeaderValue) {
+			if (req.get(contentClassificationHeader) === lrClassification) {
+				return res.redirect('/longroom/home');
+			}
 			return next();
 		} else if (req.get(contentClassificationHeader) === generalClassification) {
 			const location = buildUrlFromRequest(req);
@@ -81,13 +84,13 @@ const avAuth = () => {
 						})
 					});
 				}).catch(()=> {
-				res.render(path.join(__dirname, 'views/barrier'), {
-					barrierModel: _.extend({}, barrierModel, {
-						loginUrl: buildUrl(config.loginUrl, {location}),
-						register: buildUrl(config.registerUrl, {location}),
-						subscriptions: buildUrl(config.subscriptionsUrl)
-					})
-				});
+					res.render(path.join(__dirname, 'views/barrier'), {
+						barrierModel: _.extend({}, barrierModel, {
+							loginUrl: buildUrl(config.loginUrl, {location}),
+							register: buildUrl(config.registerUrl, {location}),
+							subscriptions: buildUrl(config.subscriptionsUrl)
+						})
+					});
 			});
 		} else if (req.get(contentClassificationHeader) === lrClassification) {
 			return res.redirect('/longroom');
