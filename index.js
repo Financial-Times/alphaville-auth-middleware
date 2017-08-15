@@ -69,6 +69,9 @@ const avAuth = () => {
 
 			barrierGuru.getBarrierData(clientIp)
 				.then(response => {
+					if(!response.displayName) {
+						throw new Error('No corporate data for barrier');
+					}
 					res.render(path.join(__dirname, 'views/barrier'), {
 						barrierModel: _.extend({}, barrierModel,{
 							title: 'Join your group subscription to access FT.com',
