@@ -6,7 +6,7 @@ const rp = require('request-promise');
 
 const getBarrierData = (ip) => {
 	const options = {
-		uri: 'https://' + barrierGuruUrl + '/corporate',
+		uri: 'https://' + barrierGuruUrl + '/barrier',
 		headers: {
 			'x-api-key': barrierGuruKey,
 			'client-ip': ip
