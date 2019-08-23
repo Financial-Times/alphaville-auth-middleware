@@ -39,6 +39,7 @@ const avAuth = () => {
 
 	const checkHeader =  process.env['AUTH_HEADER'];
 	const allowHeaderValue = process.env['AUTH_HEADER_VALUE'];
+	const siteFreeHeaderValue = process.env['SITE_FREE_AUTH_HEADER_VALUE'];
 	const contentClassificationHeader = process.env['CLASSIFICATION'];
 	const lrClassification = process.env['LR_CLASSIFICATION_VALUE'];
 	const generalClassification = process.env['GENERAL_CLASSIFICATION_VALUE'];
@@ -48,7 +49,11 @@ const avAuth = () => {
 	}
 
 	if (!allowHeaderValue) {
-		throw new Error('Value of the header to check is required');
+		throw new Error('Value of the header to check if access is granted is required');
+	}
+
+	if (!siteFreeHeaderValue) {
+		throw new Error('Value of the header to check if the site is free is required');
 	}
 
 	return function(req, res, next) {
@@ -60,6 +65,9 @@ const avAuth = () => {
 		res.set('Vary', checkHeader);
 
 		if (req.get(checkHeader) === allowHeaderValue) {
+			return next();
+		if (req.get(checkHeader) === siteFreeHeaderValue) {
+			// This is only used on occasions when we make the whole site free
 			return next();
 		} else if (req.get(contentClassificationHeader) === generalClassification) {
 			const location = buildUrlFromRequest(req);
