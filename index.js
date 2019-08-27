@@ -66,7 +66,7 @@ const avAuth = () => {
 
 		if (req.get(checkHeader) === allowHeaderValue) {
 			return next();
-		if (req.get(checkHeader) === siteFreeHeaderValue) {
+		} else if (req.get(checkHeader) === siteFreeHeaderValue) {
 			// This is only used on occasions when we make the whole site free
 			return next();
 		} else if (req.get(contentClassificationHeader) === generalClassification) {
